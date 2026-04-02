@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#FFD700",
+              "on-primary": "#131313",
+              "background": "#0E0E0E",
+              "surface": "#131313",
+              "surface-variant": "#1C1B1B",
+              "on-background": "#E5E2E1",
+              "on-surface": "#E5E2E1",
+              "on-surface-variant": "#E5E2E1/60",
+              "outline": "#4D4732",
+              "secondary": "#E5E2E1/70"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans", "sans-serif"],
+              "body": ["Plus Jakarta Sans", "sans-serif"],
+              "label": ["Plus Jakarta Sans", "sans-serif"]
+            },
+            borderRadius: {
+              "DEFAULT": "0.5rem",
+              "lg": "0.5rem",
+              "xl": "1rem",
+              "full": "9999px"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0E0E0E;
+            color: #E5E2E1;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: max(884px, 100dvh);
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="dark">
+<!-- NavigationDrawer Component (Desktop Only) -->
+<aside class="hidden md:flex flex-col h-screen w-72 fixed left-0 top-0 bg-[#0E0E0E] p-6 space-y-4 z-40">
+<div class="mb-8">
+<h1 class="text-xl font-bold text-[#FFD700] uppercase tracking-widest font-['Space_Grotesk']">The Turing Circle</h1>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-4 px-4 py-3 text-[#FFD700] bg-[#2A2A2A] rounded-lg transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-['Space_Grotesk'] uppercase text-xs tracking-widest">Library</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-[#E5E2E1]/70 hover:bg-[#1C1B1B] rounded-lg transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="person_outline">person_outline</span>
+<span class="font-['Space_Grotesk'] uppercase text-xs tracking-widest">Profile</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-[#E5E2E1]/70 hover:bg-[#1C1B1B] rounded-lg transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="article">article</span>
+<span class="font-['Space_Grotesk'] uppercase text-xs tracking-widest">Posts</span>
+</a>
+</nav>
+<div class="mt-auto pt-10 border-t border-[#4D4732]/10">
+<div class="flex items-center gap-4">
+<img alt="User Profile" class="w-10 h-10 rounded-lg object-cover" data-alt="close-up portrait of a professional man with glasses in a soft lit indoor studio environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrz5NARS7IjIQTtlICWM7KsJHo_wcWhJ4jDhYqI6o2HU--1MAlRoPAY2pIIwlp8Wkmvh4YTTVi16FJlqfIhxI5BMTTav8gRpKe_jXmui8YAdlpk_fRr8Tg29kbIdKmNCINGNVMaKiMNooWBY3pT8ORaM-stSr5dz2y8eC1WoeEkvsLbTgzyVrPJU0NXj2MlMuZZTF7hWNRAQbLddHphkzhRzNGYyNVMDz9j2NVd_KyNcYfy7-yMCe2EiJagwt2K3odhZieom8fgOe6"/>
+<div class="flex flex-col overflow-hidden">
+<span class="text-[#FFD700] font-bold text-sm truncate">Academic Author</span>
+<span class="text-[10px] text-[#E5E2E1]/60 uppercase tracking-tighter truncate font-['Space_Grotesk']">Mathematical Prestige</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- TopAppBar Component (Mobile Layout) -->
+<header class="md:hidden flex justify-between items-center w-full px-6 py-4 fixed top-0 bg-[#131313]/60 backdrop-blur-xl z-50 shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
+<span class="material-symbols-outlined text-[#FFD700] active:scale-95 transition-transform" data-icon="menu">menu</span>
+<h2 class="text-2xl font-black tracking-tighter text-[#E9C400] font-['Plus_Jakarta_Sans']">The Turing Circle</h2>
+<div class="flex items-center gap-1 text-[#FFD700] active:scale-95 transition-transform cursor-pointer">
+<span class="font-['Plus_Jakarta_Sans'] font-bold text-sm">Write</span>
+<span class="material-symbols-outlined text-xl" data-icon="edit_note">edit_note</span>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="md:ml-72 min-h-screen pt-16 md:pt-0">
+<div class="max-w-screen-xl mx-auto px-6 md:px-16 pt-12 md:pt-20 pb-32">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
+<div>
+<h1 class="font-headline text-5xl md:text-7xl font-extrabold tracking-tight text-[#E5E2E1]">Your library</h1>
+</div>
+<div>
+<button class="bg-[#FFD700] text-[#131313] px-8 py-3 rounded-lg font-bold text-sm hover:opacity-90 active:scale-95 transition-all flex items-center gap-2">
+                    New list
+                </button>
+</div>
+</div>
+<!-- Tabs Section -->
+<div class="flex items-center gap-8 md:gap-12 mb-12 overflow-x-auto pb-4 scrollbar-hide border-b border-[#4D4732]/15">
+<a class="text-[#FFD700] font-bold border-b-2 border-[#FFD700] pb-4 whitespace-nowrap text-xs uppercase tracking-widest font-['Plus_Jakarta_Sans']" href="#">Your lists</a>
+<a class="text-[#E5E2E1]/60 hover:text-[#FFD700] transition-colors pb-4 whitespace-nowrap text-xs uppercase tracking-widest font-['Plus_Jakarta_Sans']" href="#">Saved lists</a>
+<a class="text-[#E5E2E1]/60 hover:text-[#FFD700] transition-colors pb-4 whitespace-nowrap text-xs uppercase tracking-widest font-['Plus_Jakarta_Sans']" href="#">Reading history</a>
+<a class="text-[#E5E2E1]/60 hover:text-[#FFD700] transition-colors pb-4 whitespace-nowrap text-xs uppercase tracking-widest font-['Plus_Jakarta_Sans']" href="#">Responses</a>
+</div>
+<!-- Content Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+<!-- Main Featured Card -->
+<div class="md:col-span-8 flex flex-col gap-6 group cursor-pointer">
+<div class="bg-[#1C1B1B] aspect-[16/9] overflow-hidden rounded-xl border border-[#4D4732]/10">
+<img alt="Reading List Cover" class="w-full h-full object-cover grayscale opacity-60 group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" data-alt="abstract architectural minimalist photo with harsh shadows and bright highlights in a high contrast black and white style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCt-uS-Rz1Zkk42A9SZtAVQ_3ZjqWIpshZEKutT4j1cEp9acSNSUUCJtEQHF9YohROvVxUxzBLkxEbIA-EEBp5tmpfVXft75xCOf1xT3dKMzVRlWS1h9MhWDv60Di48ns4Fb_9FHXKgJmuv42swNR09M-nlwiMgrVUbo8yc0h-k7aNbYIjg1ip8agu5s5OjKWq3SKOQiqcNv1i_Ii_2FKH6VGD5qlPd4fMOY8NtnHT_MkI93vnFkLM-3gwl-weLamoFl1Wq1sg27pRS"/>
+</div>
+<div class="flex flex-col gap-3">
+<div class="flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest text-[#E5E2E1]/50 font-['Space_Grotesk']">
+<span>12 stories</span>
+<span class="w-1 h-1 bg-[#4D4732] rounded-full"></span>
+<span>Updated 2 days ago</span>
+</div>
+<h2 class="font-headline text-3xl font-bold tracking-tight text-[#E5E2E1]">Reading list</h2>
+<p class="text-[#E5E2E1]/70 font-body leading-relaxed max-w-xl">A collection of essays on modern digital culture, typography, and the future of independent publishing.</p>
+<div class="flex items-center gap-4 mt-2">
+<div class="flex -space-x-2">
+<img class="w-6 h-6 rounded-lg border-2 border-[#0E0E0E]" data-alt="close-up portrait of a woman with red hair in natural sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHJh2t-2Nmu2jF746srAbjqa3vWUPMYls9JIyp2cBkkEq87FS2nnXysODLPUVLb2XOlVM56b5PGiHwoeifCzMG5r59wFXBLVLeA_s8FZ2v5vHaAfT9MGD373mNksbuN3G9W0DyRCFxx2Sp2XW9u66jr3p5Anx3PzDOs7s5AyL0tGSzfdBJNgW4aV0QUGBYeYppEjdrYh2HPvDGKTbKD8-JqfCVqGD_pswuq1Br5bep6Y7LdS9fzwJybhdgr-6pRuggF2lgRx5yNBRD"/>
+<img class="w-6 h-6 rounded-lg border-2 border-[#0E0E0E]" data-alt="close-up portrait of a man smiling in a professional setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoECLcAERjw82EZI055M8_gcDsAhtKvcJ2lfBczseg2WwTCBxop1TyQoX1p8TGbHN_TFNgVDmfpR8CiGP3dBOalkR_HnZLPig1azEeKfVq3N68TIlEGhksbu2UxqPFmtavkLFqVvqgHjdrxVtPqhUDf-X5cN1DvfzMLn0XzIARqrxmW8HpmOc7ic0YpXVxIxAl7cXGcWgtQEEHwNOZY_b6vATGq6K4iJct1KjE-h8jqKuC3cb8m3RvunfSVGTm986ek5u63vK6N0Tm"/>
+</div>
+<span class="text-[10px] text-[#E5E2E1]/50 italic font-['Plus_Jakarta_Sans']">Shared with 4 others</span>
+</div>
+</div>
+</div>
+<!-- Secondary Column -->
+<div class="md:col-span-4 flex flex-col gap-16">
+<!-- Card 2 -->
+<div class="flex flex-col gap-4 group cursor-pointer">
+<div class="bg-[#1C1B1B] aspect-square overflow-hidden rounded-xl border border-[#4D4732]/10">
+<img alt="Design Trends" class="w-full h-full object-cover grayscale opacity-60 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500" data-alt="close-up of old books with gold lettering on a dark wooden shelf with cinematic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwcX8RfuOSrGyQCgGji4LVOHp0VDCMtKFjTlU2sTU-EW0J91wSXd2NF-CD8Kmmk2fHqdJsZ6p6C1M7Jwkp3YAk4MdcLN9dtvs6g0CN1874MzKa372EhUN7oNMURZNRcY3JGw0dIxoK1-wnAtIk689sh2WEGGwYnSBgc578OOMNo_g9ZXsj3aFuqLljIyjadGCsLH7HC7rrn4lD1QTDsCN_sv0fcwzLyYf3qhJvBqO4aqODMv9ZpED6PDKCMmYa_Tha5y_EzFg4oelK"/>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#E5E2E1]/50 font-['Space_Grotesk']">
+<span>5 stories</span>
+<span class="material-symbols-outlined text-[10px]" data-icon="lock">lock</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-[#E5E2E1]">Design Research</h3>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="flex flex-col gap-4 group cursor-pointer">
+<div class="bg-[#1C1B1B] aspect-square overflow-hidden rounded-xl border border-[#4D4732]/10">
+<img alt="Personal Essays" class="w-full h-full object-cover grayscale opacity-60 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500" data-alt="top-down view of a vintage typewriter on a white table with a small plant next to it" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwmhBzZXpxcZA0ysqW23N5n8p5hcKqsE2WqRNn1L9xXfAJ2kWkcXsTDlu6A9CV3dT8jJPGLPxRv9UlwBx9fl0LEGTKz6QLULd2qPR2P362YKPb2R7o1zZQeblOgPnoxXjsHBkwCIjY4Gprq7_dwygmx4F9WnFa5Pj0Du9MXbFE3O685YgQsHhR3Ow_ZcNExHWs1DmTYXuLzarK3TIF0dgijwdU5YJvkijhhHzwF5cliZ3AIUdUy9DlLTGyN-RDIj84hAcscGl_rfEA"/>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-[#E5E2E1]/50 font-['Space_Grotesk']">
+<span>24 stories</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-[#E5E2E1]">Personal Essays</h3>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 2: Recently Saved -->
+<div class="mt-32 pt-16 border-t border-[#4D4732]/15">
+<h2 class="font-headline text-4xl font-extrabold mb-12 text-[#E5E2E1]">Recently saved</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<!-- Feed Item 1 -->
+<article class="flex flex-col gap-4 group cursor-pointer">
+<span class="font-['Space_Grotesk'] text-[9px] uppercase tracking-[0.3em] text-[#FFD700]">Published in The Review</span>
+<h4 class="font-headline text-xl font-bold leading-tight text-[#E5E2E1] group-hover:text-[#FFD700] transition-colors">The Paradox of Digital Minimalism</h4>
+<div class="flex items-center gap-3 mt-2">
+<img class="w-5 h-5 rounded-lg" data-alt="close-up of a woman with a kind expression and natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQuXVAgCKy13gJ41UlsF8JsasU_RtJSXlayzje2DFahoRM3uKjpjInafZX6HuSxy-HG4K9d8MmFCA7nl15lXg9o91lPEtgJqB_6lu6DseYTLjXWhTeoW3Pk-KKNfcvOW-UAuCmUlogWZdgBlW-4oQX7IvLbTsLl7WtLVndG0lu1u4VXB365VL0To472hhErUbKVPagXyutnwNSpMTMmKNBeiPzi2CB5ZHTWq5ar_hiTFz4dU45BzpJGrAJP4kGDjbIi6ODX0n1ECvx"/>
+<span class="text-[10px] text-[#E5E2E1]/50 font-['Plus_Jakarta_Sans']">Elena Voss · 8 min read</span>
+</div>
+</article>
+<!-- Feed Item 2 -->
+<article class="flex flex-col gap-4 group cursor-pointer">
+<span class="font-['Space_Grotesk'] text-[9px] uppercase tracking-[0.3em] text-[#FFD700]">Culture &amp; Technology</span>
+<h4 class="font-headline text-xl font-bold leading-tight text-[#E5E2E1] group-hover:text-[#FFD700] transition-colors">Why we still read on paper</h4>
+<div class="flex items-center gap-3 mt-2">
+<img class="w-5 h-5 rounded-lg" data-alt="close-up of a man looking thoughtful in soft natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3Nnhw9k7_kgpYxikh5fsEp1DOD2XnLIqblYM83dgcAiq5fCsKLqFvkhis3amtIMWDOAqLgqjRsbxN8BZTaphb9QuMYAtIhxxRVJAO3axviYSn5P6FSUTDmAzOBcdZfOJXTwU2RFc65pV1apHLtpkVGRQSqB4LZ3wWExAOcnYcpaOXYhGjDo5UDhRxJg5mQinLaJ68y_QJ1DjBbY7eH33EthQ3RX7la-CEVqsbWm_trljaLcvOPqzHZ5jTKk4BOn8hruOHbibaO_2m"/>
+<span class="text-[10px] text-[#E5E2E1]/50 font-['Plus_Jakarta_Sans']">Marcus Aurel · 12 min read</span>
+</div>
+</article>
+<!-- Feed Item 3 -->
+<article class="flex flex-col gap-4 group cursor-pointer">
+<span class="font-['Space_Grotesk'] text-[9px] uppercase tracking-[0.3em] text-[#FFD700]">The Typographic Journal</span>
+<h4 class="font-headline text-xl font-bold leading-tight text-[#E5E2E1] group-hover:text-[#FFD700] transition-colors">The Evolution of the Serif</h4>
+<div class="flex items-center gap-3 mt-2">
+<img class="w-5 h-5 rounded-lg" data-alt="close-up portrait of a woman with a professional smile in an outdoor setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCXP5sHq52w-6KDLZhoKWyko3iRbYHMizmhM5jS8HEDBUwRWruDxnjRnx48uC7SAhaqPJUihC2q8Iab39sFY9-cX2R6slhkpersl5ju43f2dCAkoWltTJ9hZ0_ee1TFyON0RKkizih1ihbHkLzGmB5bQ2USHv_DC7-1Ez8koZ3J2D14HqoUhRt1jRV-kUxO4e_1mOZvec1Yi-TcUX4u8GBfGKNxnU1l3lyS3w1nnjPjA1FfyXNZuoM1ue1NL5g-dyu6DXsXj7ZdgJw"/>
+<span class="text-[10px] text-[#E5E2E1]/50 font-['Plus_Jakarta_Sans']">Sarah Jenkins · 6 min read</span>
+</div>
+</article>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar Component (Mobile Layout) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-[#131313]/80 backdrop-blur-2xl z-50 shadow-[0_-10px_30px_rgba(0,0,0,0.5)] border-t border-[#4D4732]/15">
+<a class="text-[#E5E2E1]/40 p-2 hover:text-[#FFD700] active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+</a>
+<a class="text-[#E5E2E1]/40 p-2 hover:text-[#FFD700] active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</a>
+<a class="text-[#E5E2E1]/40 p-2 hover:text-[#FFD700] active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</a>
+<a class="bg-[#FFD700] text-[#131313] rounded-xl p-2 scale-110 active:scale-90 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</a>
+</nav>
+<!-- Floating Action for Desktop -->
+<div class="hidden md:block fixed bottom-12 right-12 z-50">
+<button class="w-14 h-14 bg-[#FFD700] text-[#131313] rounded-xl flex items-center justify-center shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:scale-105 transition-transform active:scale-95">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+</button>
+</div>
+</body></html>

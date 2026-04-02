@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; }
+  :root {
+    --gold-bright:  #FFD700;
+    --gold-mid:     #E9A800;
+    --gold-deep:    #B8731A;
+    --gold-grad: linear-gradient(135deg, #FFD700 0%, #E9A800 55%, #B8731A 100%);
+    --bg-true:      #080808;
+    --bg-card:      #0f0f0f;
+    --bg-elevated:  #161616;
+    --bg-hover:     #1e1e1e;
+    --border:       rgba(255,215,0,0.08);
+    --border-bright:rgba(255,215,0,0.22);
+    --text-primary: #FFFFFF;
+    --text-secondary:#A8A8A8;
+    --text-muted:   #555555;
+  }
+  html, body { min-height: 100dvh; }
+  body { background: var(--bg-true); color: var(--text-primary); font-family: 'Outfit', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24; }
+  .tc-grid {
+    background-image: linear-gradient(rgba(255,215,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,215,0,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .gold-text { background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .gold-btn { background: var(--gold-grad); color: #0a0a0a; font-weight: 700; font-family: 'Outfit', sans-serif; letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.7rem; border: none; cursor: pointer; transition: filter 0.2s, transform 0.1s; }
+  .gold-btn:hover { filter: brightness(1.1); }
+  .gold-btn:active { transform: scale(0.97); }
+  .gold-outline-btn { background: transparent; border: 1.5px solid var(--gold-bright); color: var(--gold-bright); font-family: 'Outfit', sans-serif; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.65rem; cursor: pointer; transition: background 0.2s, color 0.2s; }
+  .gold-outline-btn:hover { background: var(--gold-grad); color: #0a0a0a; }
+  .mono { font-family: 'Space Mono', monospace; }
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; }
+  .card-elevated { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 6px; }
+  .tag { font-family: 'Outfit', sans-serif; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.35rem 0.75rem; border-radius: 4px; border: 1px solid rgba(255,215,0,0.2); background: rgba(255,215,0,0.06); color: var(--gold-mid); }
+  .progress-track { background: #1e1e1e; border-radius: 2px; height: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--gold-grad); border-radius: 2px; }
+  .article-h { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: clamp(1.1rem, 2.5vw, 1.5rem); line-height: 1.2; letter-spacing: -0.02em; color: #fff; transition: color 0.2s; cursor: pointer; }
+  .article-h:hover { color: var(--gold-bright); }
+  .article-body { font-family: 'Outfit', sans-serif; font-size: 0.875rem; font-weight: 400; line-height: 1.75; color: var(--text-secondary); }
+  .section-label { font-family: 'Outfit', sans-serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-muted); }
+  .dot-gold { width: 8px; height: 8px; border-radius: 50%; background: var(--gold-bright); box-shadow: 0 0 0 4px rgba(255,215,0,0.15); flex-shrink: 0; }
+  .dot-dim { width: 8px; height: 8px; border-radius: 50%; background: #2a2a2a; flex-shrink: 0; }
+  .timeline-line { width: 1px; flex: 1; background: linear-gradient(to bottom, rgba(255,215,0,0.12), transparent); margin-top: 6px; }
+  .stat-num { font-family: 'Outfit', sans-serif; font-size: 1.6rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1; color: #fff; }
+  .nav-link { font-family: 'Outfit', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-secondary); transition: color 0.2s; background: none; border: none; cursor: pointer; }
+  .nav-link:hover { color: #fff; }
+  .nav-link.active { color: var(--gold-bright); border-bottom: 2px solid var(--gold-bright); padding-bottom: 1rem; }
+  .icon-btn { background: none; border: none; cursor: pointer; color: var(--text-secondary); transition: color 0.2s; display:flex; align-items:center; gap:0.4rem; font-family:'Outfit',sans-serif; font-size:0.75rem; }
+  .icon-btn:hover { color: var(--gold-bright); }
+  body { min-height: max(884px, 100dvh); }
+</style>
+</head>
+<body class="tc-grid">
+
+<!-- SIDEBAR -->
+<aside style="position:fixed;left:0;top:0;bottom:0;width:240px;background:rgba(8,8,8,0.97);border-right:1px solid var(--border);display:none;flex-direction:column;padding:2.5rem 0;z-index:40;" class="md-sidebar">
+  <style>@media(min-width:768px){.md-sidebar{display:flex!important}}</style>
+  <div style="padding:0 2rem;margin-bottom:2.5rem;">
+    <span class="section-label">Navigation</span>
+  </div>
+  <nav style="display:flex;flex-direction:column;width:100%;">
+    <a href="#" style="display:flex;align-items:center;gap:1rem;padding:1rem 2rem;color:var(--text-secondary);font-family:'Outfit',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;transition:color 0.2s,background 0.2s;" onmouseover="this.style.color='#fff';this.style.background='var(--bg-hover)'" onmouseout="this.style.color='var(--text-secondary)';this.style.background='transparent'">
+      <span class="material-symbols-outlined" style="font-size:1.1rem;">auto_stories</span>Library
+    </a>
+    <a href="#" style="display:flex;align-items:center;gap:1rem;padding:1rem 2rem;color:var(--gold-bright);font-family:'Outfit',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;border-right:2px solid var(--gold-bright);background:rgba(255,215,0,0.04);">
+      <span class="material-symbols-outlined" style="font-size:1.1rem;">account_circle</span>Profile
+    </a>
+    <a href="#" style="display:flex;align-items:center;gap:1rem;padding:1rem 2rem;color:var(--text-secondary);font-family:'Outfit',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;transition:color 0.2s,background 0.2s;" onmouseover="this.style.color='#fff';this.style.background='var(--bg-hover)'" onmouseout="this.style.color='var(--text-secondary)';this.style.background='transparent'">
+      <span class="material-symbols-outlined" style="font-size:1.1rem;">edit_note</span>Posts
+    </a>
+  </nav>
+</aside>
+
+<!-- TOP NAV — mirrors the Turing Circle site exactly -->
+<header style="position:fixed;top:0;left:0;right:0;height:64px;background:rgba(8,8,8,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;z-index:50;" class="main-header">
+<style>@media(min-width:768px){.main-header{padding-left:calc(240px + 2rem)!important}}</style>
+  <!-- LEFT: circular logo placeholder + wordmark -->
+  <div style="display:flex;align-items:center;gap:0.75rem;">
+    <!-- Logo placeholder: replace inner span with <img src="your-logo.png" style="width:100%;height:100%;object-fit:cover"/> -->
+    <div style="width:34px;height:34px;border:1.5px solid rgba(255,215,0,0.45);border-radius:50%;background:rgba(255,215,0,0.05);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;" title="Your logo here">
+      <span class="material-symbols-outlined" style="font-size:0.95rem;color:var(--gold-bright);font-variation-settings:'FILL' 0,'wght' 200;">blur_circular</span>
+    </div>
+    <span style="font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;letter-spacing:-0.01em;white-space:nowrap;">The Turing Circle</span>
+  </div>
+  <!-- RIGHT -->
+  <div style="display:flex;align-items:center;gap:1.25rem;">
+    <button class="gold-outline-btn" style="padding:0.45rem 1.1rem;border-radius:4px;">Write</button>
+    <div style="width:34px;height:34px;border-radius:50%;border:1.5px solid var(--border-bright);overflow:hidden;flex-shrink:0;">
+      <img src="https://i.pinimg.com/736x/e4/c4/1c/e4c41cb42a6b1c2819111c3a917365a1.jpg" style="width:100%;height:100%;object-fit:cover;" alt="User"/>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main style="padding-top:64px;" class="main-content">
+<style>@media(min-width:768px){.main-content{padding-left:240px}}</style>
+  <div style="max-width:1200px;margin:0 auto;padding:3rem 2rem;">
+
+    <!-- PROFILE HEADER -->
+    <section style="margin-bottom:3.5rem;">
+      <div class="profile-grid" style="display:grid;grid-template-columns:1fr;gap:1.5rem;">
+      <style>@media(min-width:1024px){.profile-grid{grid-template-columns:1fr 310px!important}}</style>
+
+        <!-- Main card -->
+        <div class="card" style="padding:2.5rem;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(255,215,0,0.07) 0%,transparent 70%);pointer-events:none;"></div>
+          <div style="display:flex;gap:2rem;align-items:flex-start;position:relative;z-index:1;flex-wrap:wrap;">
+            <!-- Avatar -->
+            <div style="position:relative;flex-shrink:0;">
+              <div style="width:120px;height:120px;border-radius:6px;border:1.5px solid var(--border-bright);padding:3px;background:var(--bg-true);">
+                <img src="https://i.pinimg.com/736x/e4/c4/1c/e4c41cb42a6b1c2819111c3a917365a1.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:4px;" alt="John Doe"/>
+              </div>
+              <div style="position:absolute;bottom:-6px;right:-6px;background:var(--gold-grad);padding:4px;border-radius:4px;">
+                <span class="material-symbols-outlined" style="font-size:0.85rem;color:#0a0a0a;font-variation-settings:'FILL' 1;">verified</span>
+              </div>
+            </div>
+            <!-- Info -->
+            <div style="flex:1;min-width:200px;">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:0.75rem;">
+                <div>
+                  <!-- "John" white, "Doe" gold — mirrors "The Turing" + "Circle" hero treatment -->
+                  <h2 style="font-family:'Outfit',sans-serif;font-size:clamp(2rem,5vw,3rem);font-weight:900;letter-spacing:-0.03em;line-height:1;margin-bottom:0.35rem;">
+                    John <span class="gold-text">Doe</span>
+                  </h2>
+                  <span class="mono" style="font-size:0.62rem;color:var(--text-muted);letter-spacing:0.1em;">Student · MIT Manipal</span>
+                </div>
+                <button class="gold-btn" style="padding:0.55rem 1.3rem;border-radius:4px;display:flex;align-items:center;gap:0.4rem;flex-shrink:0;">
+                  <span class="material-symbols-outlined" style="font-size:0.9rem;">edit</span>Edit Profile
+                </button>
+              </div>
+              <p style="font-family:'Outfit',sans-serif;font-size:0.875rem;font-weight:400;line-height:1.75;color:var(--text-secondary);max-width:560px;margin-bottom:1.5rem;">
+                Exploring the intersections of algorithmic game theory and decentralized finance. Currently obsessed with spectral graph theory and its applications in neural network topology.
+              </p>
+              <div style="display:flex;gap:2.5rem;flex-wrap:wrap;padding-top:1.25rem;border-top:1px solid var(--border);">
+                <div><div class="stat-num">12</div><div class="section-label" style="margin-top:3px;">Readers</div></div>
+                <div><div class="stat-num">15</div><div class="section-label" style="margin-top:3px;">Drafts</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right column -->
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+          <!-- Expertise -->
+          <div class="card-elevated" style="padding:1.5rem;">
+            <div class="section-label" style="margin-bottom:1rem;">Expertise</div>
+            <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">
+              <span class="tag">Game Theory</span>
+              <span class="tag">Topology</span>
+              <span class="tag">DeFi Architect</span>
+              <span class="tag">Neural Graphs</span>
+              <span class="tag">Stochastic Calculus</span>
+            </div>
+          </div>
+          <!-- Site tagline card -->
+          <div style="padding:1.25rem 1.5rem;border:1px dashed var(--border-bright);border-radius:6px;text-align:center;">
+            <p style="font-family:'Outfit',sans-serif;font-size:0.82rem;color:var(--text-secondary);line-height:1.65;">
+              Where <strong style="color:#fff;font-weight:700;">Math</strong> meets <strong style="color:#fff;font-weight:700;">Computing.</strong>
+            </p>
+            <div class="mono" style="font-size:0.58rem;color:var(--text-muted);margin-top:0.5rem;letter-spacing:0.1em;">From the Department of Mathematics</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TABS -->
+    <nav style="display:flex;gap:2.5rem;border-bottom:1px solid var(--border);margin-bottom:3rem;">
+      <button class="nav-link active">Post</button>
+      <button class="nav-link" style="padding-bottom:1rem;">About</button>
+      <button class="nav-link" style="padding-bottom:1rem;">Archive</button>
+    </nav>
+
+    <!-- FEED + SIDEBAR -->
+    <div class="feed-grid" style="display:grid;grid-template-columns:1fr;gap:3rem;">
+    <style>@media(min-width:1024px){.feed-grid{grid-template-columns:1fr 290px!important}}</style>
+
+      <!-- Feed -->
+      <div style="display:flex;flex-direction:column;gap:3rem;">
+
+        <!-- Article 1 -->
+        <article style="display:flex;gap:1.5rem;">
+          <div style="display:flex;flex-direction:column;align-items:center;padding-top:4px;" class="hide-sm">
+          <style>.hide-sm{display:none}@media(min-width:640px){.hide-sm{display:flex}}</style>
+            <div class="dot-gold"></div><div class="timeline-line"></div>
+          </div>
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.75rem;flex-wrap:wrap;">
+              <span class="mono" style="font-size:0.6rem;color:var(--gold-mid);letter-spacing:0.1em;text-transform:uppercase;">October 24, 2023</span>
+              <span style="width:3px;height:3px;border-radius:50%;background:var(--text-muted);"></span>
+              <span class="mono" style="font-size:0.6rem;color:var(--text-muted);text-transform:uppercase;">8 min read</span>
+            </div>
+            <h3 class="article-h" style="margin-bottom:0.75rem;">The Convergence of Spectral Clustering and Human Social Dynamics</h3>
+            <p class="article-body" style="margin-bottom:1.25rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+              How the eigenvalues of Laplacian matrices can predict fracturing in digital communities. Exploring the latent space of consensus and the mathematics of polarization.
+            </p>
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div style="display:flex;gap:1.25rem;">
+                <button class="icon-btn"><span class="material-symbols-outlined" style="font-size:1.1rem;">favorite</span>2.4k</button>
+                <button class="icon-btn"><span class="material-symbols-outlined" style="font-size:1.1rem;">chat_bubble</span>142</button>
+              </div>
+              <button class="icon-btn"><span class="material-symbols-outlined">bookmark</span></button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Article 2 with image -->
+        <article style="display:flex;gap:1.5rem;">
+          <div style="display:flex;flex-direction:column;align-items:center;padding-top:4px;" class="hide-sm">
+            <div class="dot-dim"></div><div class="timeline-line"></div>
+          </div>
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.75rem;flex-wrap:wrap;">
+              <span class="mono" style="font-size:0.6rem;color:var(--gold-mid);letter-spacing:0.1em;text-transform:uppercase;">October 12, 2023</span>
+              <span style="width:3px;height:3px;border-radius:50%;background:var(--text-muted);"></span>
+              <span class="mono" style="font-size:0.6rem;color:var(--text-muted);text-transform:uppercase;">15 min read</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr;gap:1rem;margin-bottom:1rem;" class="art2">
+            <style>@media(min-width:520px){.art2{grid-template-columns:1fr 96px!important}}</style>
+              <div>
+                <h3 class="article-h" style="margin-bottom:0.75rem;">Non-Euclidean Geometries in Latent Representation Learning</h3>
+                <p class="article-body" style="display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">
+                  Why the curvature of our models matters more than their depth. A deep dive into hyperbolic embeddings and their natural ability to capture hierarchical information.
+                </p>
+              </div>
+              <div style="width:96px;height:96px;border-radius:6px;overflow:hidden;border:1px solid var(--border);flex-shrink:0;align-self:flex-start;">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhsJRNHtLVMJc2DN9sAfMju4s8Q21XmQVUkrvOcUXBQXZWgDe01dOKKeMeRxGiouUt2R5REoTo3bmkDFTr9AZoUNgRQMMfZtaJCtUmUb9f4Z4lHelWsJ5_qWzfmvMIYCRW8ff0qvHbZbM89iJXIJCAr52dX2fq5G8fv8BwCv9aIaYpAQ92BzPzvx-mlZmNwzumqooaFPbI-A2vUagKnXQ2P18K3yzPJP9Ifs0arK0ulonBLD_HP8jdvqSFSJYnNuXJyCrC3fw37RJc" style="width:100%;height:100%;object-fit:cover;" alt="Geometry"/>
+              </div>
+            </div>
+            <div style="display:flex;gap:1.25rem;">
+              <button class="icon-btn"><span class="material-symbols-outlined" style="font-size:1.1rem;">favorite</span>3.1k</button>
+              <button class="icon-btn"><span class="material-symbols-outlined" style="font-size:1.1rem;">chat_bubble</span>208</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Article 3 -->
+        <article style="display:flex;gap:1.5rem;">
+          <div style="display:flex;flex-direction:column;align-items:center;padding-top:4px;" class="hide-sm">
+            <div class="dot-dim"></div>
+          </div>
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.75rem;flex-wrap:wrap;">
+              <span class="mono" style="font-size:0.6rem;color:var(--gold-mid);letter-spacing:0.1em;text-transform:uppercase;">September 29, 2023</span>
+              <span style="width:3px;height:3px;border-radius:50%;background:var(--text-muted);"></span>
+              <span class="mono" style="font-size:0.6rem;color:var(--text-muted);text-transform:uppercase;">4 min read</span>
+            </div>
+            <h3 class="article-h" style="margin-bottom:0.75rem;">Entropy as a Measure of Narrative Complexity</h3>
+            <p class="article-body" style="margin-bottom:1.25rem;">
+              Can we quantify the 'richness' of a story through information theory? Preliminary results from a corpus analysis of post-structuralist literature.
+            </p>
+            <div style="display:flex;gap:1.25rem;">
+              <button class="icon-btn"><span class="material-symbols-outlined" style="font-size:1.1rem;">favorite</span>1.2k</button>
+              <button class="icon-btn"><span class="material-symbols-outlined" style="font-size:1.1rem;">chat_bubble</span>84</button>
+            </div>
+          </div>
+        </article>
+
+      </div><!-- /feed -->
+
+      <!-- Right sidebar -->
+      <aside style="display:flex;flex-direction:column;gap:1.5rem;">
+        <!-- Recent Activity -->
+        <div class="card-elevated" style="padding:1.75rem;">
+          <h4 style="font-family:'Outfit',sans-serif;font-weight:800;font-size:0.95rem;letter-spacing:-0.01em;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.5rem;">
+            <span class="material-symbols-outlined" style="color:var(--gold-bright);font-size:1rem;">bolt</span>Recent Activity
+          </h4>
+          <ul style="display:flex;flex-direction:column;gap:1.25rem;list-style:none;">
+            <li style="display:flex;gap:0.75rem;align-items:flex-start;">
+              <div style="padding:0.4rem;border-radius:4px;background:rgba(255,215,0,0.08);border:1px solid var(--border-bright);flex-shrink:0;">
+                <span class="material-symbols-outlined" style="font-size:1rem;color:var(--gold-bright);">publish</span>
+              </div>
+              <div>
+                <p style="font-family:'Outfit',sans-serif;font-size:0.78rem;font-weight:500;color:#fff;line-height:1.4;">Published 'Non-Euclidean Geometries'</p>
+                <p class="mono" style="font-size:0.58rem;color:var(--text-muted);margin-top:3px;">2 days ago</p>
+              </div>
+            </li>
+            <li style="display:flex;gap:0.75rem;align-items:flex-start;">
+              <div style="padding:0.4rem;border-radius:4px;background:var(--bg-hover);border:1px solid var(--border);flex-shrink:0;">
+                <span class="material-symbols-outlined" style="font-size:1rem;color:var(--text-muted);">forum</span>
+              </div>
+              <div>
+                <p style="font-family:'Outfit',sans-serif;font-size:0.78rem;font-weight:500;color:#fff;line-height:1.4;">Commented on 'Ethics of AGI'</p>
+                <p class="mono" style="font-size:0.58rem;color:var(--text-muted);margin-top:3px;">4 days ago</p>
+              </div>
+            </li>
+            <li style="display:flex;gap:0.75rem;align-items:flex-start;">
+              <div style="padding:0.4rem;border-radius:4px;background:rgba(0,241,255,0.06);border:1px solid rgba(0,241,255,0.15);flex-shrink:0;">
+                <span class="material-symbols-outlined" style="font-size:1rem;color:#00dbe8;">school</span>
+              </div>
+              <div>
+                <p style="font-family:'Outfit',sans-serif;font-size:0.78rem;font-weight:500;color:#fff;line-height:1.4;">Earned 'Quantum Contributor' Badge</p>
+                <p class="mono" style="font-size:0.58rem;color:var(--text-muted);margin-top:3px;">1 week ago</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Connect card -->
+        <div style="background:rgba(255,215,0,0.03);border:1px solid var(--border-bright);border-radius:6px;padding:1.75rem;position:relative;overflow:hidden;">
+          <div class="tc-grid" style="position:absolute;inset:0;opacity:0.25;pointer-events:none;"></div>
+          <div style="position:relative;z-index:1;">
+            <h4 style="font-family:'Outfit',sans-serif;font-weight:800;font-size:0.95rem;letter-spacing:-0.01em;margin-bottom:0.5rem;">
+              Connect with <span class="gold-text">Quants</span>
+            </h4>
+            <p style="font-family:'Outfit',sans-serif;font-size:0.78rem;color:var(--text-secondary);line-height:1.65;margin-bottom:1.25rem;">
+              Join the exclusive Turing Circle workspace for live collaborations on mathematical proofs.
+            </p>
+            <button class="gold-outline-btn" style="width:100%;padding:0.7rem;border-radius:4px;">Request Invitation</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<!-- Mobile nav -->
+<footer style="display:flex;position:fixed;bottom:0;left:0;right:0;height:60px;background:rgba(8,8,8,0.95);backdrop-filter:blur(16px);border-top:1px solid var(--border);justify-content:space-around;align-items:center;padding:0 1.5rem;z-index:50;" class="mob-nav">
+<style>@media(min-width:768px){.mob-nav{display:none!important}}</style>
+  <button class="icon-btn"><span class="material-symbols-outlined">home</span></button>
+  <button class="icon-btn"><span class="material-symbols-outlined">auto_stories</span></button>
+  <button class="gold-btn" style="width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:-20px;box-shadow:0 4px 20px rgba(255,215,0,0.3);">
+    <span class="material-symbols-outlined" style="font-size:1.2rem;">add</span>
+  </button>
+  <button class="icon-btn"><span class="material-symbols-outlined">explore</span></button>
+  <button style="background:none;border:none;cursor:pointer;color:var(--gold-bright);">
+    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">account_circle</span>
+  </button>
+</footer>
+
+</body>
+</html>

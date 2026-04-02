@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Turing Circle | Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; }
+
+  :root {
+    --gold-bright:   #FFD700;
+    --gold-mid:      #E9A800;
+    --gold-deep:     #B8731A;
+    --gold-grad:     linear-gradient(135deg, #FFD700 0%, #E9A800 55%, #B8731A 100%);
+    --bg-true:       #080808;
+    --bg-card:       #0f0f0f;
+    --bg-elevated:   #161616;
+    --bg-hover:      #1e1e1e;
+    --border:        rgba(255,215,0,0.07);
+    --border-bright: rgba(255,215,0,0.22);
+    --text-primary:  #FFFFFF;
+    --text-secondary:#A8A8A8;
+    --text-muted:    #444444;
+  }
+
+  html, body {
+    min-height: max(884px, 100dvh);
+    background: var(--bg-true);
+    color: var(--text-primary);
+    font-family: 'Outfit', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    font-size: 20px;
+  }
+
+  /* Shared 40px dot grid */
+  .tc-grid {
+    background-image:
+      linear-gradient(rgba(255,215,0,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,215,0,0.035) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .gold-text {
+    background: var(--gold-grad);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gold-btn {
+    background: var(--gold-grad);
+    color: #0a0a0a;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: filter 0.2s, transform 0.12s, box-shadow 0.2s;
+  }
+  .gold-btn:hover  { filter: brightness(1.1); box-shadow: 0 12px 32px rgba(255,215,0,0.2); }
+  .gold-btn:active { transform: scale(0.97); }
+
+  .mono { font-family: 'Space Mono', monospace; }
+  ::selection { background: #FFD700; color: #0a0a0a; }
+
+  /* Cards */
+  .card     { background: var(--bg-card);     border: 1px solid var(--border); border-radius: 6px; }
+  .card-el  { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 6px; }
+
+  .card-hover {
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .card-hover:hover {
+    border-color: var(--border-bright);
+    background: var(--bg-elevated);
+  }
+
+  /* Tab buttons */
+  .tab-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding-bottom: 1rem;
+    transition: color 0.2s;
+    white-space: nowrap;
+  }
+  .tab-btn.active { color: var(--gold-bright); border-bottom: 2px solid var(--gold-bright); }
+  .tab-btn:not(.active) { color: var(--text-muted); }
+  .tab-btn:not(.active):hover { color: #fff; }
+
+  /* Section label */
+  .slabel {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* Icon button */
+  .icon-btn {
+    background: none; border: none; cursor: pointer;
+    color: var(--text-muted);
+    display: flex; align-items: center;
+    transition: color 0.2s;
+  }
+  .icon-btn:hover { color: var(--gold-bright); }
+
+  /* History row */
+  .hist-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    transition: background 0.2s, border-color 0.2s;
+    cursor: pointer;
+  }
+  .hist-row:hover {
+    background: var(--bg-elevated);
+    border-color: var(--border);
+  }
+  .hist-row:hover .hist-more { color: var(--gold-bright); }
+
+  /* Glow orb */
+  .glow { position: absolute; border-radius: 50%; pointer-events: none; filter: blur(90px); }
+</style>
+</head>
+
+<body>
+
+<!-- ══ SIDEBAR ══ -->
+<aside style="
+  position:fixed; left:0; top:0; bottom:0; width:240px;
+  background:rgba(8,8,8,0.97);
+  border-right:1px solid var(--border);
+  display:none; flex-direction:column;
+  padding:2.5rem 0;
+  z-index:40;
+" class="md-sidebar">
+<style>@media(min-width:768px){.md-sidebar{display:flex!important}}</style>
+
+  <div style="padding:0 2rem; margin-bottom:2.5rem;">
+    <span class="slabel">Dashboard</span>
+  </div>
+
+  <nav style="display:flex;flex-direction:column;width:100%;">
+    <a href="#" style="display:flex;align-items:center;gap:1rem;padding:0.9rem 2rem;color:var(--gold-bright);font-family:'Outfit',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;border-right:2px solid var(--gold-bright);background:rgba(255,215,0,0.04);">
+      <span class="material-symbols-outlined">auto_stories</span>Library
+    </a>
+    <a href="#" style="display:flex;align-items:center;gap:1rem;padding:0.9rem 2rem;color:var(--text-muted);font-family:'Outfit',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;transition:color 0.2s,background 0.2s;" onmouseover="this.style.color='#fff';this.style.background='var(--bg-hover)'" onmouseout="this.style.color='var(--text-muted)';this.style.background='transparent'">
+      <span class="material-symbols-outlined">account_circle</span>Profile
+    </a>
+    <a href="#" style="display:flex;align-items:center;gap:1rem;padding:0.9rem 2rem;color:var(--text-muted);font-family:'Outfit',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;transition:color 0.2s,background 0.2s;" onmouseover="this.style.color='#fff';this.style.background='var(--bg-hover)'" onmouseout="this.style.color='var(--text-muted)';this.style.background='transparent'">
+      <span class="material-symbols-outlined">edit_note</span>Posts
+    </a>
+  </nav>
+</aside>
+
+<!-- ══ TOP NAV ══ -->
+<header style="
+  position:fixed; top:0; left:0; right:0; height:64px;
+  background:rgba(8,8,8,0.88); backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 2rem;
+  z-index:50;
+" class="main-header">
+<style>@media(min-width:768px){.main-header{padding-left:calc(240px + 2rem)!important}}</style>
+
+  <div style="display:flex;align-items:center;gap:0.75rem;">
+    <!-- Circular logo placeholder -->
+    <div style="width:34px;height:34px;border:1.5px solid rgba(255,215,0,0.45);border-radius:50%;background:rgba(255,215,0,0.05);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;" title="Your logo here">
+      <span class="material-symbols-outlined" style="font-size:0.95rem;color:var(--gold-bright);font-variation-settings:'FILL' 0,'wght' 200;">blur_circular</span>
+    </div>
+    <span style="font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;letter-spacing:-0.01em;white-space:nowrap;">The Turing Circle</span>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:1.25rem;">
+    <button style="background:none;border:none;cursor:pointer;font-family:'Outfit',sans-serif;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold-bright);transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">Write</button>
+    <div style="width:34px;height:34px;border-radius:50%;border:1.5px solid var(--border-bright);overflow:hidden;flex-shrink:0;">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA67M2VXzBZ5w2-hqfSktuIJ5mRMYPoHz9M4Y9XwQ6FuYf_lkjQrT4_t7lkH2nf08l9PkEAu2_8ZEBoekYN43Zogt45MATIjsNj8P3bGds3VEkBRkfTz5Gf_xkTRwsOMNfOr47fIpey4c9z2k95mlzbH1JcbtM6bizZEqX0sty94jcEe55ArmnoKGpSj2AXkk5rTIuJP3TBKtF8y8hDCtpGqBpwi8eDYtXv4WiwHIueYmjdcNCPM_wy15a2lTEnaHGe0nEVBfJUXVmx"
+           style="width:100%;height:100%;object-fit:cover;" alt="User"/>
+    </div>
+  </div>
+</header>
+
+<!-- ══ MAIN ══ -->
+<main class="tc-grid" style="min-height:100dvh; padding-top:64px; position:relative; overflow:hidden;" class="main-content">
+<style>@media(min-width:768px){main{padding-left:240px}}</style>
+
+  <!-- Glow orbs -->
+  <div class="glow" style="top:-5%;right:-5%;width:480px;height:480px;background:rgba(255,215,0,0.04);"></div>
+  <div class="glow" style="bottom:15%;left:-8%;width:380px;height:380px;background:rgba(0,219,232,0.03);"></div>
+
+  <div style="max-width:1280px;margin:0 auto;padding:3rem 2rem;position:relative;z-index:10;">
+
+    <!-- ── PAGE HEADER ── -->
+    <section style="display:flex;align-items:flex-end;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;margin-bottom:3.5rem;">
+      <div>
+        <span class="slabel" style="display:block;margin-bottom:0.9rem;color:rgba(255,215,0,0.5);">Archive &amp; Collections</span>
+        <!-- Big title: "Your library" white + gold period — mirrors "The Turing Circle" hero -->
+        <h2 style="font-family:'Outfit',sans-serif;font-weight:900;font-size:clamp(3rem,8vw,5.5rem);letter-spacing:-0.04em;line-height:0.95;color:#fff;">
+          Your library<span class="gold-text">.</span>
+        </h2>
+      </div>
+      <button class="gold-btn" style="padding:0.9rem 2.2rem;border-radius:4px;white-space:nowrap;">
+        New list
+      </button>
+    </section>
+
+    <!-- ── TABS ── -->
+    <nav style="display:flex;gap:2rem;border-bottom:1px solid var(--border);margin-bottom:3rem;overflow-x:auto;">
+      <button class="tab-btn active">Your lists</button>
+      <button class="tab-btn">Saved lists</button>
+      <button class="tab-btn">Reading history</button>
+      <button class="tab-btn">Responses</button>
+    </nav>
+
+    <!-- ── BENTO GRID ── -->
+    <div class="bento-grid" style="display:grid;grid-template-columns:1fr;gap:1.25rem;">
+    <style>@media(min-width:768px){.bento-grid{grid-template-columns:repeat(12,1fr)!important}}</style>
+
+      <!-- CARD 1: Large featured -->
+      <div class="card card-hover bento-lg" style="padding:2.5rem;position:relative;overflow:hidden;min-height:380px;display:flex;flex-direction:column;justify-content:space-between;">
+      <style>@media(min-width:768px){.bento-lg{grid-column:span 8!important}}</style>
+
+        <!-- Dot grid overlay -->
+        <div style="position:absolute;inset:0;opacity:0.4;pointer-events:none;background-image:radial-gradient(circle,rgba(255,215,0,0.1) 1px,transparent 1px);background-size:24px 24px;"></div>
+        <!-- Gold glow -->
+        <div style="position:absolute;bottom:-80px;right:-80px;width:280px;height:280px;background:radial-gradient(circle,rgba(255,215,0,0.06) 0%,transparent 70%);pointer-events:none;"></div>
+        <!-- Decorative circle -->
+        <div style="position:absolute;bottom:-2rem;right:-2rem;width:160px;height:160px;border:1px solid rgba(255,215,0,0.1);border-radius:50%;transition:transform 0.7s;pointer-events:none;" class="deco-circle"></div>
+        <style>.card:hover .deco-circle{transform:scale(1.5)}</style>
+
+        <div style="position:relative;z-index:1;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <div style="width:7px;height:7px;border-radius:50%;background:var(--gold-bright);"></div>
+              <span class="slabel" style="color:rgba(255,255,255,0.3);">Reading List · 12 Articles</span>
+            </div>
+            <button class="icon-btn"><span class="material-symbols-outlined">more_vert</span></button>
+          </div>
+        </div>
+
+        <div style="position:relative;z-index:1;">
+          <h3 style="font-family:'Outfit',sans-serif;font-weight:800;font-size:clamp(1.5rem,3vw,2.2rem);letter-spacing:-0.03em;line-height:1.1;margin-bottom:1rem;color:#fff;transition:color 0.2s;cursor:pointer;" onmouseover="this.style.color='var(--gold-bright)'" onmouseout="this.style.color='#fff'">
+            The Quantum Mechanics of Pure Mathematics
+          </h3>
+          <p style="font-family:'Outfit',sans-serif;font-size:0.875rem;line-height:1.75;color:var(--text-secondary);max-width:480px;margin-bottom:2rem;">
+            A curated collection of research papers and editorial essays exploring the intersection of quantum theory and abstract topological spaces.
+          </p>
+
+          <!-- Contributor avatars -->
+          <div style="display:flex;">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqni7CRfyVGo-KAbTuLo-x9BYjq6OhWq0iFRj4IT_XYr_NWvZ4_w8WmBIFL0f4DB1FwNLg7bcWIUjvmTzAmIzS0jj-kHsNKfh96KakATZ389Xh2_xarb6xDn4DOXG40GHi-_TrHXjRJZXiZU17D_MRBBnBoIfMzo31016pSl_jpwHCRjlY74ZnwLFbO6YTQea9rEcMXKd7iA6LboqNf1APAAd3ApTN6uqDvO6iz7fLzY_7XjAOksyJmZyc8GszUYjmPoH7E9eoOFGN"
+                 style="width:32px;height:32px;border-radius:50%;border:2px solid var(--bg-card);object-fit:cover;margin-right:-8px;" alt="Contributor"/>
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDABXZMqgy-ViwWUsdJpw_Zae5zFnBfwQEIg9e4zwl8d_qS8_rxh8StLaqrgnm37zetT1kIhC21K0NaxU4WAXYmOIWctjudfctbZyZKJPi7UCtzgg2z5Bvb3gxjo9T1aBBq9z7nDQsWcBT3Ip-8kozfCeQ-t4BcWQ-ySKLG-hwoAsjWrdQwzD73SrLmzZhvIIZlvi22oNDjV8WmAhz4Rq357SsETcD4N2RYTGq1CMfu4mGrVqKIhgrNeEpLKMjeHetEBTHp0KKYsvMF"
+                 style="width:32px;height:32px;border-radius:50%;border:2px solid var(--bg-card);object-fit:cover;margin-right:-8px;" alt="Contributor"/>
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEY72up7U4hMxaohTbBVxfkEKCMVaMQKkbOwVcy-_dwley4M0qzMFCN95XRNZNpKOKis-4EnmqC1_PHhxswbuOxapsjnDqkzmR-Hqs00Ee7cseIGReY95OhHJsd62Y1QE8_56EX2Jvi5AdkkxJ242iHXEfyS0aVz1APUzfzcJiv9v82-GPjXNjs8MY-F4fknBRIEKCoJIdi6a21sSKPrw63zl1LSx4LHbnYf11-dX4vH17bKQT1gL_79kIsgIaHfvSRy6zWjCWgKOR"
+                 style="width:32px;height:32px;border-radius:50%;border:2px solid var(--bg-card);object-fit:cover;margin-right:-8px;" alt="Contributor"/>
+            <div style="width:32px;height:32px;border-radius:50%;border:2px solid var(--bg-card);background:var(--bg-elevated);display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:0.55rem;font-weight:700;color:var(--gold-bright);">+9</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2: Computational Ethics -->
+      <div class="card card-hover bento-sm" style="padding:1.75rem;display:flex;flex-direction:column;justify-content:space-between;min-height:220px;">
+      <style>@media(min-width:768px){.bento-sm{grid-column:span 4!important}}</style>
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem;">
+            <span class="material-symbols-outlined" style="color:var(--gold-bright);font-variation-settings:'FILL' 1,'wght' 400;">lock</span>
+            <span class="slabel" style="color:rgba(255,255,255,0.25);">Private · 4 Items</span>
+          </div>
+          <h4 style="font-family:'Outfit',sans-serif;font-weight:800;font-size:1.15rem;letter-spacing:-0.02em;margin-bottom:0.5rem;color:#fff;">Computational Ethics</h4>
+          <p style="font-family:'Outfit',sans-serif;font-size:0.8rem;color:var(--text-secondary);line-height:1.65;">Drafts and notes on the algorithmic governance of autonomous systems.</p>
+        </div>
+        <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+          <span class="slabel">Updated 2h ago</span>
+          <button class="icon-btn" style="transition:transform 0.2s,color 0.2s;" onmouseover="this.style.transform='translateX(3px)';this.style.color='var(--gold-bright)'" onmouseout="this.style.transform='translateX(0)';this.style.color='var(--text-muted)'">
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- CARD 3: Prime Number Theory -->
+      <div class="card card-hover bento-sm" style="padding:1.75rem;display:flex;flex-direction:column;justify-content:space-between;min-height:220px;">
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem;">
+            <span class="material-symbols-outlined" style="color:var(--gold-bright);">bookmark</span>
+            <span class="slabel" style="color:rgba(255,255,255,0.25);">Shared · 28 Items</span>
+          </div>
+          <h4 style="font-family:'Outfit',sans-serif;font-weight:800;font-size:1.15rem;letter-spacing:-0.02em;margin-bottom:0.5rem;color:#fff;">Prime Number Theory</h4>
+          <p style="font-family:'Outfit',sans-serif;font-size:0.8rem;color:var(--text-secondary);line-height:1.65;">Fundamental readings for advanced cryptography enthusiasts.</p>
+        </div>
+        <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+          <span class="slabel">Updated May 12</span>
+          <button class="icon-btn" style="transition:transform 0.2s,color 0.2s;" onmouseover="this.style.transform='translateX(3px)';this.style.color='var(--gold-bright)'" onmouseout="this.style.transform='translateX(0)';this.style.color='var(--text-muted)'">
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- CARD 4: Architecture of Cognition — asymmetric with image -->
+      <div class="card card-hover bento-lg" style="padding:2rem;overflow:hidden;">
+        <div class="cog-inner" style="display:grid;grid-template-columns:1fr;gap:1.5rem;">
+        <style>@media(min-width:640px){.cog-inner{grid-template-columns:1fr 1fr!important}}</style>
+
+          <div style="display:flex;flex-direction:column;justify-content:center;">
+            <span class="slabel" style="color:var(--gold-bright);margin-bottom:1rem;">Neural Networks</span>
+            <h3 style="font-family:'Outfit',sans-serif;font-weight:800;font-size:1.4rem;letter-spacing:-0.02em;line-height:1.15;margin-bottom:0.75rem;color:#fff;">The Architecture of Cognition</h3>
+            <p style="font-family:'Outfit',sans-serif;font-size:0.82rem;color:var(--text-secondary);line-height:1.7;margin-bottom:1.5rem;">
+              Explorations into the structural parallels between biological neurons and deep learning layers.
+            </p>
+            <button style="background:none;border:none;border-bottom:1px solid var(--gold-bright);padding-bottom:3px;font-family:'Outfit',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-bright);cursor:pointer;width:fit-content;transition:color 0.2s,border-color 0.2s;" onmouseover="this.style.color='#fff';this.style.borderColor='#fff'" onmouseout="this.style.color='var(--gold-bright)';this.style.borderColor='var(--gold-bright)'">
+              View Full List
+            </button>
+          </div>
+
+          <div style="border-radius:6px;overflow:hidden;border:1px solid var(--border);min-height:200px;position:relative;" class="cog-img-wrap">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsTZcB9DHGV8Gfr61ZOEojJuZMIotRigdz8M75f5a1EGvXY6AHw8QDRVllvcfw7NrCNUP68OPXI2OGD7c8IJPEEg4RxZn04n1SgW6v6Hvuvp5G83IcAEzAaboaHv-pT80wxxbRO_pqY4rzplXjbjPwhONdqjdJe7n3QE6KdOLzPHEl-HCUQMckLkFq8XXl-AzbKyWvFfHSJq_KsCnN9bsYkgzwjfuTfXTHJqdwAdhjlDJCMQ4cmRWJ7omYtiiSCpTfnh0QBqc0AsDz"
+                 style="width:100%;height:100%;object-fit:cover;filter:grayscale(70%) brightness(0.85);transition:filter 0.6s;" alt="Neural network visualization"
+                 onmouseover="this.style.filter='grayscale(0%) brightness(1)'"
+                 onmouseout="this.style.filter='grayscale(70%) brightness(0.85)'"/>
+            <!-- Gradient fade like library feed -->
+            <div style="position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(to top,var(--bg-card),transparent);pointer-events:none;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 5: Create new list -->
+      <div class="card card-hover bento-sm" style="padding:1.75rem;display:flex;flex-direction:column;gap:1.25rem;cursor:pointer;" onmouseover="this.querySelector('.add-zone').style.borderColor='var(--gold-bright)';this.querySelector('.add-zone').style.background='rgba(255,215,0,0.04)';this.querySelector('.add-icon').style.color='var(--gold-bright)'" onmouseout="this.querySelector('.add-zone').style.borderColor='rgba(255,215,0,0.12)';this.querySelector('.add-zone').style.background='transparent';this.querySelector('.add-icon').style.color='var(--text-muted)'">
+        <div class="add-zone" style="height:96px;display:flex;align-items:center;justify-content:center;border:1px dashed rgba(255,215,0,0.12);border-radius:6px;transition:border-color 0.2s,background 0.2s;">
+          <span class="material-symbols-outlined add-icon" style="font-size:1.4rem;color:var(--text-muted);transition:color 0.2s;">add_circle</span>
+        </div>
+        <div>
+          <h4 style="font-family:'Outfit',sans-serif;font-weight:800;font-size:1rem;color:#fff;margin-bottom:0.3rem;">Create new list</h4>
+          <p style="font-family:'Outfit',sans-serif;font-size:0.75rem;color:var(--text-muted);line-height:1.5;">Organize your readings by topic or theme.</p>
+        </div>
+      </div>
+
+    </div><!-- /bento-grid -->
+
+    <!-- ── RECENT ACTIVITY ── -->
+    <section style="margin-top:5rem;">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2rem;">
+        <h3 style="font-family:'Outfit',sans-serif;font-weight:800;font-size:1.4rem;letter-spacing:-0.02em;">Recent Activity</h3>
+        <button style="background:none;border:none;cursor:pointer;font-family:'Outfit',sans-serif;font-size:0.62rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold-bright);transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+          Clear History
+        </button>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:0.35rem;">
+
+        <!-- Row 1 -->
+        <div class="hist-row">
+          <div style="display:flex;align-items:center;gap:1.5rem;">
+            <span class="mono" style="font-size:0.62rem;color:var(--text-muted);min-width:1.5rem;">01</span>
+            <div>
+              <h5 style="font-family:'Outfit',sans-serif;font-weight:600;font-size:0.875rem;color:#fff;margin-bottom:0.25rem;">The Riemann Hypothesis: A Centenary Review</h5>
+              <p class="mono" style="font-size:0.58rem;color:var(--text-muted);letter-spacing:0.06em;">Read 14 minutes ago · In <span style="color:var(--text-secondary);font-style:italic;">Mathematical Prestige</span></p>
+            </div>
+          </div>
+          <button class="icon-btn hist-more"><span class="material-symbols-outlined">more_horiz</span></button>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="hist-row">
+          <div style="display:flex;align-items:center;gap:1.5rem;">
+            <span class="mono" style="font-size:0.62rem;color:var(--text-muted);min-width:1.5rem;">02</span>
+            <div>
+              <h5 style="font-family:'Outfit',sans-serif;font-weight:600;font-size:0.875rem;color:#fff;margin-bottom:0.25rem;">Algorithmic Complexity in Distributed Systems</h5>
+              <p class="mono" style="font-size:0.58rem;color:var(--text-muted);letter-spacing:0.06em;">Read 3 hours ago · In <span style="color:var(--text-secondary);font-style:italic;">Computer Science</span></p>
+            </div>
+          </div>
+          <button class="icon-btn hist-more"><span class="material-symbols-outlined">more_horiz</span></button>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="hist-row">
+          <div style="display:flex;align-items:center;gap:1.5rem;">
+            <span class="mono" style="font-size:0.62rem;color:var(--text-muted);min-width:1.5rem;">03</span>
+            <div>
+              <h5 style="font-family:'Outfit',sans-serif;font-weight:600;font-size:0.875rem;color:#fff;margin-bottom:0.25rem;">The Geometry of Deep Learning: A Visual Guide</h5>
+              <p class="mono" style="font-size:0.58rem;color:var(--text-muted);letter-spacing:0.06em;">Read yesterday · In <span style="color:var(--text-secondary);font-style:italic;">Neural Networks</span></p>
+            </div>
+          </div>
+          <button class="icon-btn hist-more"><span class="material-symbols-outlined">more_horiz</span></button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- bottom padding for mobile nav -->
+    <div style="height:80px;" class="mob-spacer">
+    <style>@media(min-width:768px){.mob-spacer{display:none}}</style>
+    </div>
+
+  </div><!-- /container -->
+</main>
+
+<!-- Mobile nav -->
+<nav style="
+  position:fixed;bottom:0;left:0;right:0;height:60px;
+  background:rgba(8,8,8,0.95);
+  backdrop-filter:blur(16px);
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-around;
+  padding:0 1.5rem;z-index:50;
+" class="mob-nav">
+<style>@media(min-width:768px){.mob-nav{display:none!important}}</style>
+  <button style="display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;color:var(--gold-bright);">
+    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1,'wght' 400;">auto_stories</span>
+    <span class="slabel" style="color:var(--gold-bright);">Library</span>
+  </button>
+  <button style="display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;color:var(--text-muted);">
+    <span class="material-symbols-outlined">edit_note</span>
+    <span class="slabel">Posts</span>
+  </button>
+  <button style="display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;color:var(--text-muted);">
+    <span class="material-symbols-outlined">account_circle</span>
+    <span class="slabel">Profile</span>
+  </button>
+</nav>
+
+</body>
+</html>
